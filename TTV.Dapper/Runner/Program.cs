@@ -1,6 +1,7 @@
 ﻿using DataLayer;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Runner
@@ -11,7 +12,23 @@ namespace Runner
 
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+			Initialize();
+			Get_all_should_return_6_results();
+		}
+
+		static void Get_all_should_return_6_results()
+		{
+			// arrange
+			var repository = CreateRepository();
+
+			// act
+			var contacts = repository.GetAll();
+
+			// assert
+			Console.WriteLine($"Count: {contacts.Count}");
+			Debug.Assert(contacts.Count == 6);
+			contacts.Output();
+
 		}
 
 		private static void Initialize()
@@ -24,7 +41,7 @@ namespace Runner
 
 		private static IContactRepository CreateRepository()
 		{
-			return new ContactRepository(config.GetConnectionString("DefaultConnection"));
+			return new ContactRepository(config.GetConnectionString("DefaultConnection")); // does not work
 		}
 	}
 }
